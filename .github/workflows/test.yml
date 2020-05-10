@@ -2,35 +2,32 @@ on: [push]
 name: Test
 jobs:
   readmeExample:
-    name: "[TEST] README example"
+    name: '[TEST] README example'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
       - uses: actions/setup-node@v1
         with:
-          node-version: "12.x"
-      - run: "npm ci"
-      - run: "npm run build"
+          node-version: '12.x'
+      - run: 'npm ci'
+      - run: 'npm run build'
       - uses: ./
         id: get_latest_release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           query: |
-            query release($owner:String!,$repo:String!) {
-              repository(owner:$owner,name:$repo) {
-                releases(first:1) {
+            query {
+              repository(owner: "DraconicDevelopment",name: "progamingmanager") {
+                packages(first: 1, names: ["game-website-dev"]) {
                   nodes {
-                    name
-                    createdAt
-                    tagName
-                    description
+                    latestVersion {
+                      version
+                    }
                   }
                 }
               }
             }
-          owner: ${{ github.event.repository.owner.name }}
-          repo: ${{ github.event.repository.name }}
       - run: "echo latest release: '${{ steps.get_latest_release.outputs.data }}'"
       - id: test_with_int_arg
         uses: ./

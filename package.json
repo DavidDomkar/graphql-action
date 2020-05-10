@@ -5,7 +5,8 @@
   "description": "A GitHub Action to send queries to GitHub's GraphQL API",
   "main": "dist/index.js",
   "scripts": {
-    "build": "ncc build index.js -o dist"
+    "build": "ncc build index.js -o dist",
+    "start": "node index.js"
   },
   "repository": "https://github.com/octokit/graphql-action",
   "keywords": [
