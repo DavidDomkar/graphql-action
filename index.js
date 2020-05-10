@@ -2,6 +2,8 @@ const { inspect } = require('util');
 
 const core = require('@actions/core');
 const { Octokit } = require('@octokit/action');
+const { request } = require('@octokit/request');
+const { withCustomRequest } = require('@octokit/graphql');
 
 main();
 
@@ -17,11 +19,15 @@ async function main() {
     }
 
     const time = Date.now();
-    const data = await octokit.graphql(query, variables, {
+
+    const previewHeadersRequest = request.defaults({
       headers: {
-        accept: 'application/vnd.github.packages-preview+json',
+        Accept: 'application/vnd.github.packages-preview+json',
       },
     });
+
+    const previewGraphql = withCustomRequest(previewHeadersRequest);
+    const data = await previewGraphql(query, variables);
 
     core.info(`< 200 ${Date.now() - time}ms`);
 
