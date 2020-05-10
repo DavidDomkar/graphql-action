@@ -18,7 +18,7 @@ jobs:
         with:
           query: |
             query {
-              repository(owner: "DraconicDevelopment",name: "progamingmanager") {
+              repository(owner: "DavidDomkar",name: "progamingmanager-old") {
                 packages(first: 1, names: ["game-website-dev"]) {
                   nodes {
                     latestVersion {
