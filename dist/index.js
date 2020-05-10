@@ -387,6 +387,8 @@ const { inspect } = __webpack_require__(669);
 
 const core = __webpack_require__(470);
 const { Octokit } = __webpack_require__(725);
+const { request } = __webpack_require__(753);
+const { withCustomRequest } = __webpack_require__(898);
 
 main();
 
@@ -402,11 +404,16 @@ async function main() {
     }
 
     const time = Date.now();
-    const data = await octokit.graphql(query, variables, {
+
+    const previewHeadersRequest = request.defaults({
       headers: {
-        accept: 'application/vnd.github.packages-preview+json',
+        Authorization: 'Bearer ' + process.env.GITHUB_TOKEN,
+        Accept: 'application/vnd.github.packages-preview+json',
       },
     });
+
+    const previewGraphql = withCustomRequest(previewHeadersRequest);
+    const data = await previewGraphql(query, variables);
 
     core.info(`< 200 ${Date.now() - time}ms`);
 

@@ -22,6 +22,7 @@ async function main() {
 
     const previewHeadersRequest = request.defaults({
       headers: {
+        Authorization: 'Bearer ' + process.env.GITHUB_TOKEN,
         Accept: 'application/vnd.github.packages-preview+json',
       },
     });
